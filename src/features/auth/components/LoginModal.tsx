@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import { useCart } from "../../carts/hooks/useCarts";
 
 interface LoginModalProps {
   onClose: () => void;
@@ -13,6 +14,7 @@ export default function LoginModal({
   onSwitchToSignUp,
 }: LoginModalProps) {
   const { login } = useAuth();
+  const { clearCart } = useCart();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,6 +24,7 @@ export default function LoginModal({
     setLoading(true);
     try {
       await login(email, password);
+      clearCart();
       toast.success("Welcome back!");
       onClose();
     } catch (err: any) {
